@@ -13,6 +13,10 @@
         </div>
       </template>
       <template v-else-if="currencyList.length">
+        <div class="ct-page-select">
+          <h6 class="mt-2">Items / page:</h6>
+          <PageSizeSelect @items-per-page-changed="setItemsPerPage" />
+        </div>
         <CurrencyTable :currencyList="currencyList" :perPage="itemsPerpage" />
       </template>
     </div>
@@ -21,6 +25,7 @@
 
 <script>
 import CurrencyTable from "@/components/CurrencyTable";
+import PageSizeSelect from "@/components/PageSizeSelect";
 import PageError from "@/components/PageError";
 import Loader from "@/components/Loader";
 import axios from "axios";
@@ -28,6 +33,7 @@ import axios from "axios";
 export default {
   components: {
     CurrencyTable,
+    PageSizeSelect,
     PageError,
     Loader,
   },
@@ -77,6 +83,9 @@ export default {
           this.isLoading = false;
         });
     },
+    setItemsPerPage(value) {
+      this.itemsPerpage = value;
+    },
   },
   beforeDestroy() {
     clearInterval(this.interval);
@@ -103,5 +112,10 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.ct-page-select {
+  display: flex;
+  align-items: center;
+  margin-bottom: -2.5em;
 }
 </style>

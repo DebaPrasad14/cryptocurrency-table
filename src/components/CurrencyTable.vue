@@ -29,7 +29,9 @@
           <div class="-icon">
             <b-img :src="data.item.icon" />
           </div>
-          <div class="ml-2">{{ data.item.name }}</div>
+          <div class="ml-2 text-primary">
+            <b>{{ data.item.name }}</b>
+          </div>
         </div>
       </template>
       <template #cell(symbol)="data">
