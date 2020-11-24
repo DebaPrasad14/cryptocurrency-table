@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Cryptocurrency App</h1>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,11 +9,3 @@ export default {
   name: "app",
 };
 </script>
-
-<style>
-body {
-  background: #fefefe;
-  margin: auto;
-  padding: auto;
-}
-</style>
