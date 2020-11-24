@@ -7,6 +7,7 @@
       aria-controls="currency-table"
       first-number
       last-number
+      align="right"
     ></b-pagination>
 
     <b-table
