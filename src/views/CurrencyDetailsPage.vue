@@ -1,14 +1,69 @@
 <template>
-  <div class="">
-    <CurrencyTable />
+  <div class="container ct-container">
+    <div class="mt-4">
+      <h1 class="text-header">Top 100 Cryptocurrencies</h1>
+      <CurrencyTable :currencyList="currencyList" :perPage="itemsPerpage" />
+    </div>
   </div>
 </template>
 
 <script>
 import CurrencyTable from "@/components/CurrencyTable";
+import axios from "axios";
+
 export default {
   components: {
     CurrencyTable,
   },
+  data() {
+    return {
+      limit: 100,
+      BASE_URL: "https://api.coinranking.com/v1/public/coins/",
+      isLoading: false,
+      isError: false,
+      currencyList: [],
+      itemsPerpage: "10",
+    };
+  },
+  created() {
+    axios
+      .get(`${this.BASE_URL}?limit=${this.limit}`)
+      .then((response) => {
+        this.currencyList = response.data.data.coins.reduce((acc, el) => {
+          let obj = {
+            id: el.uuid,
+            rank: el.rank,
+            icon: el.iconUrl,
+            name: el.name,
+            symbol: el.symbol,
+            price: parseFloat(el.price).toFixed(2),
+            change: el.change,
+          };
+          return acc.concat(obj);
+        }, []);
+        // eslint-disable-next-line
+        console.log(this.currencyList);
+      })
+      .catch((e) => {
+        // eslint-disable-next-line
+        console.log(e);
+      });
+  },
 };
 </script>
+
+<style scoped>
+.ct-container {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "segoe ui", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+.text-header {
+  display: block;
+  margin-bottom: 1em;
+  font-size: 30px;
+  line-height: 1.6em;
+  font-weight: 600;
+  color: rgb(23, 24, 27);
+  text-align: center;
+}
+</style>

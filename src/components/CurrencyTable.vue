@@ -4,44 +4,93 @@
       v-model="currentPage"
       :total-rows="rows"
       :per-page="perPage"
-      aria-controls="my-table"
+      aria-controls="currency-table"
+      first-number
+      last-number
     ></b-pagination>
 
-    <p class="mt-3">Current Page: {{ currentPage }}</p>
-
     <b-table
-      id="my-table"
-      :items="items"
+      id="currency-table"
+      :fields="tableFields"
+      :items="currencyList"
       :per-page="perPage"
       :current-page="currentPage"
-      small
-    ></b-table>
+      head-variant="dark"
+      table-class="cp-table"
+    >
+      <template #cell(rank)="data">
+        <div>
+          {{ data.item.rank }}
+        </div>
+      </template>
+      <template #cell(name)="data">
+        <div class="d-flex align-items-center">
+          <div class="-icon">
+            <b-img :src="data.item.icon" />
+          </div>
+          <div class="ml-2">{{ data.item.name }}</div>
+        </div>
+      </template>
+      <template #cell(symbol)="data">
+        <div>{{ data.item.symbol }}</div>
+      </template>
+      <template #cell(price)="data">
+        <div>{{ data.item.price }}</div>
+      </template>
+      <template #cell(change)="data">
+        <div
+          :class="data.item.change < 0 ? 'text-danger' : 'text-success ml-1'"
+        >
+          {{ data.item.change }} %
+        </div>
+      </template>
+    </b-table>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    currencyList: {
+      type: Array,
+      required: true,
+    },
+    perPage: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
-      perPage: 3,
       currentPage: 1,
-      items: [
-        { id: 1, first_name: "Fred", last_name: "Flintstone" },
-        { id: 2, first_name: "Wilma", last_name: "Flintstone" },
-        { id: 3, first_name: "Barney", last_name: "Rubble" },
-        { id: 4, first_name: "Betty", last_name: "Rubble" },
-        { id: 5, first_name: "Pebbles", last_name: "Flintstone" },
-        { id: 6, first_name: "Bamm Bamm", last_name: "Rubble" },
-        { id: 7, first_name: "The Great", last_name: "Gazzoo" },
-        { id: 8, first_name: "Rockhead", last_name: "Slate" },
-        { id: 9, first_name: "Pearl", last_name: "Slaghoople" },
+      tableFields: [
+        { key: "rank", label: "Rank" },
+        { key: "name", label: "Name" },
+        { key: "symbol", label: "Symbol" },
+        { key: "price", label: "Price ($)" },
+        { key: "change", label: "Change (%)" },
       ],
     };
   },
   computed: {
     rows() {
-      return this.items.length;
+      return this.currencyList.length;
     },
   },
 };
 </script>
+
+<style scoped>
+.cp-table {
+  font-size: 14px;
+}
+.-icon {
+  height: 20px;
+  width: 20px;
+  margin-bottom: 3px;
+}
+.-icon img {
+  width: 100%;
+  height: 100%;
+}
+</style>
