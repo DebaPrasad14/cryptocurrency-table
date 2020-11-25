@@ -15,7 +15,10 @@
       <template v-else-if="currencyList.length">
         <div class="ct-page-select">
           <h6 class="mt-2">Items / page:</h6>
-          <PageSizeSelect @items-per-page-changed="setItemsPerPage" />
+          <PageSizeSelect
+            :perPage="itemsPerpage"
+            @items-per-page-changed="setItemsPerPage"
+          />
         </div>
         <CurrencyTable :currencyList="currencyList" :perPage="itemsPerpage" />
       </template>

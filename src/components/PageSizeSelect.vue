@@ -10,9 +10,15 @@
 
 <script>
 export default {
+  props: {
+    perPage: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
-      selected: "10",
+      selected: this.perPage,
       options: [
         { value: "10", text: "10" },
         { value: "25", text: "25" },
